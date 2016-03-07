@@ -1,4 +1,4 @@
-//最差匹配
+
 //测试用例说明：文件名为“in”，每行为一个整数与一个字母，字母为‘c’时free
 #include <cstdio>
 #include <algorithm>
