@@ -1,6 +1,5 @@
 #include <cstdio>
 #include <cstdlib>
-#include <cstdlib>
 
 using namespace std;
 
