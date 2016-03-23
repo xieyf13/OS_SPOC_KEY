@@ -1,0 +1,7 @@
+可以仿照FIFO算法，需要修改map_swappable和swap_out_victim两个函数。
+CLOCK算法维护一个循环链表，在init_mm处进行初始化，之后对两个函数进行对应改动即可。
+
+缺页率方面clock会比LRU差，因为clock算法缺少部分过去信息。
+LRU算法的开销会比较大。
+
+在lab3上实现LRU算法可能会出现困难，不一定能承担LRU算法的开销。
