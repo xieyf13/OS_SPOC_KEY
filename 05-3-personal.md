@@ -53,3 +53,12 @@ tf和context中的esp
 
 (8)内核线程initproc的第一次执行流程是什么样的？能跟踪出来吗？
 
+在 kern_init 中调用 proc_init(void) 函数，存储pid和name。调用kernel_thread()函数，设置 initproc 的 trapframe。
+
+调用do_fork()函数，在其中调用copy_thread()函数，把context的入口地址设在forkret。完成initproc的创建。
+
+通过 kern_init - cpu_idle() - schedule() - proc_run 的调用，切换到initproc。
+
+在 forkret 中，把tf的值压入寄存器。在 kernel_thread_entry ， 通过 call %ebx 调用的函数init_main
+
+通过do_exit，退出initproc。
