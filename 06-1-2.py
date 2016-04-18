@@ -55,7 +55,6 @@ print '\n'
 if options.solve == True:
     print '** Solutions **\n'
     if options.policy == 'SJF':
-        #2012011309 2012011302
         joblist.sort(key = lambda job: job[1])
         curtime = 0.00
         print 'Execution trace:'
