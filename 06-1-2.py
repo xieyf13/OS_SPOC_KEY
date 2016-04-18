@@ -71,7 +71,6 @@ if options.solve == True:
         for tmp in joblist:
             jobnum  = tmp[0]
             runtime = tmp[1]
-            
             response   = t
             turnaround = t + runtime
             wait       = t
@@ -98,7 +97,6 @@ if options.solve == True:
         for tmp in joblist:
             jobnum  = tmp[0]
             runtime = tmp[1]
-            
             response   = t
             turnaround = t + runtime
             wait       = t
