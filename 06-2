@@ -1,0 +1,88 @@
+﻿#define BIG_STRIDE    0x7FFFFFFF /* ??? */
+这里面的BIG_STRIDE 的大小是否可以调整？把BIG_STRIDE调整成更大的s后依然可以。
+在default_sched.c中：
+When one proc structure is selected, remember to update the stride
+ * property of the proc. (stride += BIG_STRIDE / priority) 这里定义的lab6_poolstride 
+ if (p->lab6_priority == 0)
+          p->lab6_stride += BIG_STRIDE;
+     else p->lab6_stride += BIG_STRIDE / p->lab6_priority;
+  可以看出这里使用了取模的运算，lab6_stride 的值如果大于BIG_STRIDE后，让p->lab6_stride-q->lab6_stride>0取lab6_stride较小的值
+  
+  
+  如何实现调度的？
+  ++ setup timer interrupts
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+-----stride_enqueue------
+-----skew_heap_insert----
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+kernel_execve: pid = 2, name = "exit".
+I am the parent. Forking the child...
+-----stride_enqueue------
+-----skew_heap_insert----
+I am parent, fork a child pid 3
+I am the parent, waiting now..
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+I am the child.
+-----stride_enqueue------
+-----skew_heap_insert----
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+-----stride_enqueue------
+-----skew_heap_insert----
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+-----stride_enqueue------
+-----skew_heap_insert----
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+-----stride_enqueue------
+-----skew_heap_insert----
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+-----stride_enqueue------
+-----skew_heap_insert----
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+-----stride_enqueue------
+-----skew_heap_insert----
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+-----stride_enqueue------
+-----skew_heap_insert----
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+-----stride_enqueue------
+-----skew_heap_insert----
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+waitpid 3 ok.
+exit pass.
+-----stride_enqueue------
+-----skew_heap_insert----
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+-----stride_enqueue------
+-----skew_heap_insert----
+---stride_dequeue------
+----skew_heap_remove----
+---proc_num:1----
+all user-mode processes have quit.
+init check memory pass.
+kernel panic at kern/process/proc.c:460:
+    initproc exit.
+通过slice 每次在队列中选择stride小的进行执行
